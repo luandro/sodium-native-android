@@ -42,22 +42,30 @@ if (process.argv.indexOf('--print-lib') > -1) {
 }
 
 mkdirSync(path.join(__dirname, 'lib'))
+console.log('SODIUM-NATIVE-ANDROID Pre-Building for: ', os.platform())
 
-switch (os.platform()) {
-  case 'darwin':
-    buildDarwin()
-    break
+// switch (os.platform()) {
+//   case 'darwin':
+//     buildDarwin()
+//     break
 
-  case 'win32':
-    buildWindows()
-    break
+//   case 'win32':
+//     buildWindows()
+//     break
+//   case 'unix':
+//     buildUnix('so', function (err) {
+//       if (err) throw err
+//     })
+//   default:
+//     buildAndroid('so', function (err) {
+//       if (err) throw err
+//     })
+//     break
+// }
 
-  default:
-    buildUnix('so', function (err) {
-      if (err) throw err
-    })
-    break
-}
+buildAndroid(function (err) {
+  if (err) throw err
+})
 
 function buildWindows () {
   var res = path.join(__dirname, 'lib/libsodium-' + arch + '.dll')
@@ -107,6 +115,34 @@ function buildDarwin () {
     if (err) throw err
     spawn('install_name_tool', ['-id', res, res], {stdio: 'inherit'}, function (err) {
       if (err) throw err
+    })
+  })
+}
+
+function buildAndroid (cb) {
+  var arch = 'armv7-a'
+  var ext = '.so'
+  var res = path.join(__dirname, 'lib/libsodium-' + arch + ext)
+  spawn('./configure', ['--prefix=' + tmp], {cwd: __dirname, stdio: 'inherit'}, function (err) {
+    if (err) throw err
+    spawn('make', ['clean'], {cwd: dir, stdio: 'inherit'}, function (err) {
+      if (err) throw err
+      spawn('make', [
+        `CFLAGS="-Os -mfloat-abi=softfp -mfpu=vfpv3-d16 -mthumb -marm -march=${arch}"`,
+        'ARCH=arm',
+        'HOST_COMPILER=arm-linux-androideabi "$(dirname "$0")/android-build.sh"',
+        'install'
+      ], {cwd: dir, stdio: 'inherit'}, function (err) {
+        if (err) throw err
+
+        var la = ini.decode(fs.readFileSync(path.join(tmp, 'lib/libsodium.la')).toString())
+
+        var lib = fs.realpathSync(path.join(la.libdir, la.dlname))
+        fs.rename(lib, res, function (err) {
+          if (err) throw err
+          if (cb) cb(null, res)
+        })
+      })
     })
   })
 }

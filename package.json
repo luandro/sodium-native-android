@@ -1,5 +1,5 @@
 {
-  "name": "sodium-native-no-prebuild",
+  "name": "sodium-native-android",
   "version": "2.2.1-1",
   "description": "Low level bindings for libsodium",
   "main": "index.js",
