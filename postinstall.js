@@ -9,28 +9,27 @@ var debug = path.join(__dirname, 'build/Debug')
 var tmp = path.join(__dirname, 'tmp')
 var build = fs.existsSync(release) ? release : debug
 var arch = process.env.ARCH || os.arch()
-console.log('SODIUM-NATIVE-ANDROID Post-Building for: ', os.platform())
 
-// switch (os.platform()) {
-//   case 'win32':
-//     buildWindows()
-//     break
+switch (os.platform()) {
+  case 'win32':
+    buildWindows()
+    break
 
-//   case 'darwin':
-//     buildDarwin()
-//     break
+  case 'darwin':
+    buildDarwin()
+    break
 
-//   case 'freebsd':
-//   case 'openbsd':
-//   case 'unix':
-//     buildUnix()
-//     break
-//   default:
-//     buildAndroid()
-//     break
-// }
+  case 'freebsd':
+  case 'openbsd':
+  case 'unix':
+    buildUnix()
+    break
+  default:
+    buildAndroid()
+    break
+}
 
-buildAndroid()
+// buildAndroid()
 
 function buildWindows () {
   var lib = path.join(__dirname, 'lib/libsodium-' + arch + '.dll')
