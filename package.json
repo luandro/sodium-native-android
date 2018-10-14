@@ -28,7 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/staltz/sodium-native-no-prebuild.git"
+    "url": "https://github.com/luandro/sodium-native-android.git"
   },
   "contributors": [
     "Emil Bay <github@tixz.dk> (http://bayes.dk)",
@@ -36,7 +36,7 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/staltz/sodium-native-no-prebuild/issues"
+    "url": "https://github.com/luandro/sodium-native-android/issues"
   },
-  "homepage": "https://github.com/staltz/sodium-native-no-prebuild"
+  "homepage": "https://github.com/luandro/sodium-native-android"
 }
