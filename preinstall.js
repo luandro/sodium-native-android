@@ -43,25 +43,25 @@ if (process.argv.indexOf('--print-lib') > -1) {
 
 mkdirSync(path.join(__dirname, 'lib'))
 
-switch (os.platform()) {
-  case 'darwin':
-    buildDarwin()
-    break
+// switch (os.platform()) {
+//   case 'darwin':
+//     buildDarwin()
+//     break
 
-  case 'win32':
-    buildWindows()
-    break
+//   case 'win32':
+//     buildWindows()
+//     break
 
-  default:
-    buildUnix('so', function (err) {
-      if (err) throw err
-    })
-    break
-}
+//   default:
+//     buildUnix('so', function (err) {
+//       if (err) throw err
+//     })
+//     break
+// }
 
-// buildAndroid(function (err) {
-//   if (err) throw err
-// })
+buildAndroid(function (err) {
+  if (err) throw err
+})
 
 function buildAndroid (cb) {
   // HOST_COMPILER=arm-linux-androideabi "$(dirname "$0")/android-build.sh"
